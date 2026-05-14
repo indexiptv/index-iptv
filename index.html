@@ -160,7 +160,7 @@
         document.getElementById('t-btn-gen').innerText = t.btnGen;
         document.getElementById('t-btn-copy').innerText = t.btnCopy;
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
+        if(event) event.target.classList.add('active');
     }
 
     let finalUrl = "";
@@ -170,14 +170,14 @@
         const m = document.getElementById('mac').value.trim();
         
         if(!p || !m) {
-            alert("Fill fields / أكمل البيانات");
+            alert("أكمل البيانات أولاً");
             return;
         }
 
-        // تم ربط الرابط بـ Cloudflare Worker الخاص بك مباشرة
+        // رابط الـ Worker الخاص بك في Cloudflare
         const workerUrl = "https://iptv-backend.indexiptv212.workers.dev";
         
-        // بناء الرابط النهائي مع المعاملات
+        // بناء الرابط ليرسل البيانات إلى الـ Worker
         finalUrl = `${workerUrl}/?portal=${encodeURIComponent(p)}&mac=${encodeURIComponent(m)}`;
         
         document.getElementById('output').innerText = finalUrl;
@@ -185,9 +185,9 @@
     }
 
     function copyUrl() {
-        if (!finalUrl) return;
+        if(!finalUrl) return;
         navigator.clipboard.writeText(finalUrl);
-        alert("✅ Copied / تم النسخ");
+        alert("✅ تم نسخ الرابط بنجاح");
     }
 </script>
 
