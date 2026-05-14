@@ -28,7 +28,6 @@
             align-items: center;
         }
 
-        /* صورة الخلفية العلوية */
         .hero-banner {
             width: 100%;
             height: 220px;
@@ -41,7 +40,6 @@
 
         .container { width: 100%; max-width: 500px; padding: 0 20px 40px; margin-top: -60px; z-index: 2; }
 
-        /* حقوق التليغرام */
         .tg-badge {
             display: flex; align-items: center; justify-content: center; gap: 8px;
             background: rgba(0, 136, 204, 0.15); border: 1px solid rgba(0, 136, 204, 0.3);
@@ -50,7 +48,6 @@
         }
         .tg-badge:hover { background: rgba(0, 136, 204, 0.25); transform: translateY(-2px); }
 
-        /* محول اللغات */
         .lang-switcher {
             display: flex; gap: 5px; background: rgba(255,255,255,0.05); 
             padding: 4px; border-radius: 10px; margin-bottom: 20px;
@@ -61,7 +58,6 @@
         }
         .lang-btn.active { background: var(--p-accent); color: white; }
 
-        /* البطاقات */
         .glass-card {
             background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(15px);
             border: 1px solid var(--card-border); border-radius: 20px;
@@ -172,14 +168,24 @@
     function generate() {
         const p = document.getElementById('portal').value.trim();
         const m = document.getElementById('mac').value.trim();
-        if(!p || !m) return alert("Fill fields / أكمل البيانات");
+        
+        if(!p || !m) {
+            alert("Fill fields / أكمل البيانات");
+            return;
+        }
 
-        finalUrl = window.location.origin + "/playlist.m3u?portal=" + encodeURIComponent(p) + "&mac=" + encodeURIComponent(m);
+        // تم ربط الرابط بـ Cloudflare Worker الخاص بك مباشرة
+        const workerUrl = "https://iptv-backend.indexiptv212.workers.dev";
+        
+        // بناء الرابط النهائي مع المعاملات
+        finalUrl = `${workerUrl}/?portal=${encodeURIComponent(p)}&mac=${encodeURIComponent(m)}`;
+        
         document.getElementById('output').innerText = finalUrl;
         document.getElementById('res-box').classList.add('active');
     }
 
     function copyUrl() {
+        if (!finalUrl) return;
         navigator.clipboard.writeText(finalUrl);
         alert("✅ Copied / تم النسخ");
     }
